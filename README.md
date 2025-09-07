@@ -18,7 +18,7 @@ Campfire is an open-source web-based chat application that provides:
 
 1. Add this repository to your Home Assistant Supervisor:
    - Go to **Supervisor** → **Add-on Store** → **⋮** → **Repositories**
-   - Add: `https://github.com/yourusername/addon-campfire-once`
+   - Add: `https://github.com/kebabmane/addon-campfire-once`
 
 2. Install the "Campfire" add-on
 

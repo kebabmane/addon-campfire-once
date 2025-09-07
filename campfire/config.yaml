@@ -37,4 +37,4 @@ schema:
   admin_password: password
   secret_key_base: password
   database_url: str?
-image: "ghcr.io/home-assistant/{arch}-addon-campfire"
+image: "ghcr.io/kebabmane/{arch}-addon-campfire"
