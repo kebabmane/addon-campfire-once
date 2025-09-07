@@ -17,19 +17,27 @@ RUN apk add --no-cache \
     build-base \
     git \
     sqlite-dev \
+    sqlite \
     nodejs \
     yarn \
     tzdata \
     bash \
     curl \
     jq \
-    openssl
+    openssl \
+    musl-dev \
+    gcc \
+    make \
+    pkgconfig
 
 # Set working directory
 WORKDIR /app
 
 # Clone Campfire source code
 RUN git clone https://github.com/basecamp/once-campfire.git /app
+
+# Set environment variables for gem compilation
+ENV BUNDLE_BUILD__SQLITE3="--with-sqlite3-include=/usr/include --with-sqlite3-lib=/usr/lib"
 
 # Install Ruby gems
 RUN bundle config set --local deployment 'true' && \
