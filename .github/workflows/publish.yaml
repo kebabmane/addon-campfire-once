@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.addon }}
-          platforms: linux/${{ matrix.arch == 'amd64' && 'amd64' || matrix.arch == 'aarch64' && 'arm64' || matrix.arch == 'armhf' && 'arm/v6' || matrix.arch == 'armv7' && 'arm/v7' || matrix.arch == 'i386' && '386' }}
+          platforms: linux/${{ matrix.arch == 'amd64' && 'amd64' || matrix.arch == 'aarch64' && 'arm64' }}
           push: true
           tags: |
             ${{ env.REGISTRY }}/kebabmane/${{ matrix.arch }}-addon-${{ matrix.addon }}:${{ steps.addon.outputs.version }}
