@@ -38,11 +38,11 @@ RUN git clone https://github.com/basecamp/once-campfire.git /app
 
 # Set environment variables for gem compilation
 ENV BUNDLE_BUILD__SQLITE3="--with-sqlite3-include=/usr/include --with-sqlite3-lib=/usr/lib"
+ENV BUNDLE_FORCE_RUBY_PLATFORM="1"
 
 # Install Ruby gems
-RUN bundle config set --local deployment 'true' && \
-    bundle config set --local without 'development test' && \
-    bundle install
+RUN bundle config set --local without 'development test' && \
+    bundle install --no-deployment
 
 # Install Node.js dependencies and build assets
 RUN yarn install --frozen-lockfile && \
