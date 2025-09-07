@@ -28,7 +28,12 @@ RUN apk add --no-cache \
     musl-dev \
     gcc \
     make \
-    pkgconfig
+    pkgconfig \
+    libffi-dev \
+    vips-dev \
+    vips \
+    glib-dev \
+    libc6-compat
 
 # Set working directory
 WORKDIR /app
