@@ -18,8 +18,6 @@ RUN apk add --no-cache \
     git \
     sqlite-dev \
     sqlite \
-    nodejs \
-    yarn \
     tzdata \
     bash \
     curl \
@@ -49,10 +47,6 @@ ENV BUNDLE_FORCE_RUBY_PLATFORM="1"
 # Install Ruby gems
 RUN bundle config set --local without 'development test' && \
     bundle install --no-deployment
-
-# Install Node.js dependencies and build assets
-RUN yarn install --frozen-lockfile && \
-    yarn build
 
 # Create necessary directories
 RUN mkdir -p /app/tmp/pids /app/log /app/storage
