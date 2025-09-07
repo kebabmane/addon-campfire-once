@@ -35,6 +35,7 @@ export CAMPFIRE_DOMAIN="$DOMAIN"
 
 # SSL Configuration
 # For Home Assistant ingress, SSL is handled by the proxy, so we disable force_ssl in Rails
+export DISABLE_SSL="true"
 export RAILS_FORCE_SSL="false"
 bashio::log.info "SSL termination handled by Home Assistant ingress proxy"
 
