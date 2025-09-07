@@ -1,6 +1,6 @@
 name: "Campfire"
 description: "Basecamp's Once Campfire chat application for teams"
-version: "1.0.1"
+version: "1.1.0"
 slug: "campfire"
 init: false
 arch:
@@ -20,7 +20,7 @@ map:
   - "share:rw"
 options:
   domain: ""
-  ssl: true
+  ssl: false
   certfile: fullchain.pem
   keyfile: privkey.pem
   admin_password: ""
