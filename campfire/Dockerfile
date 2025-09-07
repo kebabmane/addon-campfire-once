@@ -33,7 +33,9 @@ RUN apk add --no-cache \
     vips-dev \
     vips \
     glib-dev \
-    libc6-compat
+    libc6-compat \
+    yaml-dev \
+    libyaml
 
 # Set working directory
 WORKDIR /app
