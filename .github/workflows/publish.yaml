@@ -1,0 +1,66 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        addon: ["campfire"]
+        arch: ["aarch64", "amd64", "armhf", "armv7", "i386"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get addon information
+        id: addon
+        run: |
+          echo "version=$(yq eval '.version' ${{ matrix.addon }}/config.yaml)" >> $GITHUB_OUTPUT
+          echo "name=$(yq eval '.name' ${{ matrix.addon }}/config.yaml)" >> $GITHUB_OUTPUT
+          echo "description=$(yq eval '.description' ${{ matrix.addon }}/config.yaml)" >> $GITHUB_OUTPUT
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.addon }}
+          platforms: linux/${{ matrix.arch == 'amd64' && 'amd64' || matrix.arch == 'aarch64' && 'arm64' || matrix.arch == 'armhf' && 'arm/v6' || matrix.arch == 'armv7' && 'arm/v7' || matrix.arch == 'i386' && '386' }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/kebabmane/${{ matrix.arch }}-addon-${{ matrix.addon }}:${{ steps.addon.outputs.version }}
+            ${{ env.REGISTRY }}/kebabmane/${{ matrix.arch }}-addon-${{ matrix.addon }}:latest
+          build-args: |
+            BUILD_FROM=ghcr.io/home-assistant/${{ matrix.arch }}-base:latest
+          labels: |
+            org.opencontainers.image.title=${{ steps.addon.outputs.name }}
+            org.opencontainers.image.description=${{ steps.addon.outputs.description }}
+            org.opencontainers.image.version=${{ steps.addon.outputs.version }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
